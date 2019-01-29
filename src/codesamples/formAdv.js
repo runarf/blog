@@ -1,12 +1,19 @@
 import React from 'react'
-import { Formik, Form, Field, ErrorMessage, FieldArray } from 'formik'
+import {
+  Formik,
+  Form,
+  Field,
+  ErrorMessage,
+  FieldArray,
+} from 'formik'
 import * as Yup from 'yup'
-/** @jsx jsx */
-import { jsx, css } from '@emotion/core'
 import uuid from 'uuid/v4'
-import Button from '@material-ui/core/Button'
 
-import 'bootstrap/dist/css/bootstrap.css'
+import {
+  Box,
+  Grid,
+  Grommet,
+} from 'grommet'
 
 const schema = () => {
   return Yup.lazy(values => {
@@ -14,23 +21,36 @@ const schema = () => {
       .map(lot => lot.name)
       .map(name => ({ count: 1, name }))
       .reduce((a, b) => {
-        a[b.name] = (a[b.name] || 0) + b.count
+        a[b.name] =
+          (a[b.name] || 0) + b.count
         return a
       }, {})
     console.log(lotNames)
-    const duplicateLotNames = Object.keys(lotNames).filter(a => lotNames[a] > 1)
+    const duplicateLotNames = Object.keys(
+      lotNames
+    ).filter(a => lotNames[a] > 1)
 
     return Yup.object().shape({
       lots: Yup.array().of(
         Yup.object().shape({
           name: Yup.string()
-            .notOneOf(duplicateLotNames, 'lotname has to be unique')
+            .notOneOf(
+              duplicateLotNames,
+              'lotname has to be unique'
+            )
             .required('required'),
           quantities: Yup.array().of(
             Yup.number()
-              .typeError('must be number')
-              .min(0, 'must be positive')
-              .integer('must be integer')
+              .typeError(
+                'must be number'
+              )
+              .min(
+                0,
+                'must be positive'
+              )
+              .integer(
+                'must be integer'
+              )
           ),
         })
       ),
@@ -44,31 +64,50 @@ const initialValues = {
   lots: [
     {
       name: 'Test',
-      quantities: ['021111', '123', '231'],
-      id: '105d668b-0912-4bff-91b4-3aec881bb6ce',
+      quantities: [
+        '021111',
+        '123',
+        '231',
+      ],
+      id:
+        '105d668b-0912-4bff-91b4-3aec881bb6ce',
     },
     {
       name: 'sdfsd',
       quantities: ['01', '21', '12'],
-      id: '4041e2a2-6d47-42c1-8bf1-a3084e48992f',
+      id:
+        '4041e2a2-6d47-42c1-8bf1-a3084e48992f',
     },
   ],
 }
 
 export default () => (
   <div className="container-fluid">
-    <h1 className="row">Any place in your app</h1>
     <Formik
       initialValues={initialValues}
       validationSchema={schema}
-      onSubmit={(values, { setSubmitting }) => {
+      onSubmit={(
+        values,
+        { setSubmitting }
+      ) => {
         setTimeout(() => {
-          alert(JSON.stringify(values, null, 2))
+          alert(
+            JSON.stringify(
+              values,
+              null,
+              2
+            )
+          )
           setSubmitting(false)
         }, 400)
       }}
     >
-      {({ isSubmitting, values, isValid, resetForm }) => (
+      {({
+        isSubmitting,
+        values,
+        isValid,
+        resetForm,
+      }) => (
         <Form>
           <div className="row">
             <div
@@ -92,51 +131,78 @@ export default () => (
             {arrayHelpers => (
               <div>
                 {values.lots &&
-                  values.lots.length > 0 &&
-                  values.lots.map((lot, lotIndex) => (
-                    <div className="row" key={lot.id}>
+                  values.lots.length >
+                    0 &&
+                  values.lots.map(
+                    (lot, lotIndex) => (
                       <div
-                        className="col-3"
-                        css={css`
-                          background-color: turquoise;
-                        `}
+                        className="row"
+                        key={lot.id}
                       >
-                        <Field name={`lots[${lotIndex}].name`} />
-                        <ErrorMessage name={`lots[${lotIndex}].name`} />
-                      </div>
-                      {lot.quantities.map((quantity, quantityIndex) => (
                         <div
-                          className="col"
-                          key={quantityIndex}
+                          className="col-3"
                           css={css`
-                            background-color: pink;
+                            background-color: turquoise;
                           `}
                         >
                           <Field
-                            name={`lots[${lotIndex}].quantities[${quantityIndex}]`}
+                            name={`lots[${lotIndex}].name`}
                           />
                           <ErrorMessage
-                            name={`lots[${lotIndex}].quantities[${quantityIndex}]`}
+                            name={`lots[${lotIndex}].name`}
                           />
                         </div>
-                      ))}
-                    </div>
-                  ))}
+                        {lot.quantities.map(
+                          (
+                            quantity,
+                            quantityIndex
+                          ) => (
+                            <div
+                              className="col"
+                              key={
+                                quantityIndex
+                              }
+                              css={css`
+                                background-color: pink;
+                              `}
+                            >
+                              <Field
+                                name={`lots[${lotIndex}].quantities[${quantityIndex}]`}
+                              />
+                              <ErrorMessage
+                                name={`lots[${lotIndex}].quantities[${quantityIndex}]`}
+                              />
+                            </div>
+                          )
+                        )}
+                      </div>
+                    )
+                  )}
                 <div className="row">
                   <div className="col">
                     <button
                       type="button"
                       onClick={() =>
-                        arrayHelpers.push({
-                          name: '',
-                          quantities: Array(countSizes).fill(0),
-                          id: uuid(),
-                        })
+                        arrayHelpers.push(
+                          {
+                            name: '',
+                            quantities: Array(
+                              countSizes
+                            ).fill(0),
+                            id: uuid(),
+                          }
+                        )
                       }
                     >
                       +
                     </button>
-                    <Button type="submit" disabled={!isValid || isSubmitting}>
+                    <Button
+                      type="submit"
+                      disabled={
+                        !isValid ||
+                        isSubmitting
+                      }
+                    >
                       Submit
                     </Button>
                   </div>
