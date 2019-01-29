@@ -18,7 +18,10 @@ import {
   TextInput,
 } from 'grommet'
 
-import { Add } from 'grommet-icons'
+import {
+  Add,
+  Close,
+} from 'grommet-icons'
 
 const schema = () => {
   return Yup.lazy(values => {
@@ -81,12 +84,6 @@ const initialValues = {
       id:
         '105d668b-0912-4bff-91b4-3aec881bb6ce',
     },
-    {
-      name: 'sdfsd',
-      quantities: ['01', '21', '12'],
-      id:
-        '4041e2a2-6d47-42c1-8bf1-a3084e48992f',
-    },
   ],
 }
 
@@ -94,139 +91,199 @@ const CustomField = ({ field }) => (
   <TextInput {...field} />
 )
 
-export default () => (
-  <Grommet>
-    <Formik
-      initialValues={initialValues}
-      validationSchema={schema}
-      onSubmit={(
-        values,
-        { setSubmitting }
-      ) => {
-        setTimeout(() => {
-          alert(
-            JSON.stringify(
-              values,
-              null,
-              2
+export default () => {
+  let addRow
+  return (
+    <Grommet>
+      <Formik
+        initialValues={initialValues}
+        validationSchema={schema}
+        onSubmit={(
+          values,
+          { setSubmitting }
+        ) => {
+          setTimeout(() => {
+            alert(
+              JSON.stringify(
+                values,
+                null,
+                2
+              )
             )
-          )
-          setSubmitting(false)
-        }, 400)
-      }}
-    >
-      {({
-        isSubmitting,
-        values,
-        isValid,
-      }) => (
-        <Form>
-          <Box
-            direction="row"
-            justify="between"
-          >
-            <Text>Name of lot</Text>
-            {SIZES.map(size => (
-              <Text key={size}>
-                {size}
-              </Text>
-            ))}
-          </Box>
-          <FieldArray name="lots">
-            {arrayHelpers => {
-              return [
-                values.lots &&
-                  values.lots.length >
-                    0 &&
-                  values.lots.map(
-                    (lot, lotIndex) => (
-                      <Box
-                        key={lotIndex}
-                        direction="row"
-                        justify="center"
-                      >
-                        <Box
-                          direction="row"
-                          justify="center"
-                        >
-                          <Box>
-                            <Field
-                              name={`lots[${lotIndex}].name`}
-                            >
-                              {({
-                                field,
-                              }) => (
-                                <TextInput
-                                  {...field}
-                                />
-                              )}
-                            </Field>
-                            <ErrorMessage
-                              component={
-                                Text
-                              }
-                              name={`lots[${lotIndex}].name`}
-                            />
-                          </Box>
-                          {lot.quantities.map(
-                            (
-                              quantity,
-                              quantityIndex
-                            ) => (
-                              <Box
-                                key={
-                                  quantityIndex
-                                }
-                              >
-                                <Field
-                                  component={
-                                    CustomField
-                                  }
-                                  name={`lots[${lotIndex}].quantities[${quantityIndex}]`}
-                                />
-                                <ErrorMessage
-                                  name={`lots[${lotIndex}].quantities[${quantityIndex}]`}
-                                />
-                              </Box>
-                            )
-                          )}
-                        </Box>
-                      </Box>
-                    )
-                  ),
-                <Box
-                  justify="center"
-                  align="center"
-                >
-                  <Button
-                    onClick={() =>
-                      arrayHelpers.push(
-                        {
-                          name: '',
-                          quantities: Array(
-                            countSizes
-                          ).fill(0),
-                          id: uuid(),
-                        }
-                      )
-                    }
-                  >
-                    <Add />
-                  </Button>
-                  <Button
-                    primary
-                    type="submit"
-                  >
-                    <Text textAlign="center">
-                      Submit
+            setSubmitting(false)
+          }, 400)
+        }}
+      >
+        {({
+          isSubmitting,
+          values,
+          isValid,
+        }) => (
+          <Form>
+            <Grid
+              fill
+              columns={[
+                'small',
+                'small',
+                'small',
+                'small',
+                'small',
+              ]}
+              rows={[
+                'auto',
+                'auto',
+                'flex',
+              ]}
+              areas={[
+                {
+                  name: 'header',
+                  start: [0, 0],
+                  end: [4, 0],
+                },
+                {
+                  name: 'main',
+                  start: [0, 1],
+                  end: [4, 1],
+                },
+                {
+                  name: 'bottom',
+                  start: [0, 2],
+                  end: [0, 2],
+                },
+              ]}
+            >
+              <Box
+                gridArea="header"
+                direction="row"
+              >
+                <Box>
+                  <Text>
+                    Name of lot
+                  </Text>
+                </Box>
+                {SIZES.map(size => (
+                  <Box>
+                    <Text key={size}>
+                      {size}
                     </Text>
-                  </Button>
-                </Box>,
-              ]
-            }}
-          </FieldArray>
-        </Form>
-      )}
-    </Formik>
-  </Grommet>
-)
+                  </Box>
+                ))}
+              </Box>
+              <Box gridArea="main">
+                <FieldArray name="lots">
+                  {arrayHelpers => {
+                    addRow =
+                      arrayHelpers.push
+                    return [
+                      values.lots &&
+                        values.lots
+                          .length > 0 &&
+                        values.lots.map(
+                          (
+                            lot,
+                            lotIndex
+                          ) => (
+                            <Box
+                              direction="row"
+                              key={
+                                lotIndex
+                              }
+                            >
+                              <Box
+                                direction="row"
+                                justify="between"
+                              >
+                                <Box>
+                                  <Field
+                                    name={`lots[${lotIndex}].name`}
+                                  >
+                                    {({
+                                      field,
+                                    }) => (
+                                      <TextInput
+                                        {...field}
+                                      />
+                                    )}
+                                  </Field>
+                                  <ErrorMessage
+                                    component={
+                                      Text
+                                    }
+                                    name={`lots[${lotIndex}].name`}
+                                  />
+                                </Box>
+                                {lot.quantities.map(
+                                  (
+                                    quantity,
+                                    quantityIndex
+                                  ) => (
+                                    <Box
+                                      key={
+                                        quantityIndex
+                                      }
+                                    >
+                                      <Field
+                                        component={
+                                          CustomField
+                                        }
+                                        name={`lots[${lotIndex}].quantities[${quantityIndex}]`}
+                                      />
+                                      <ErrorMessage
+                                        name={`lots[${lotIndex}].quantities[${quantityIndex}]`}
+                                      />
+                                    </Box>
+                                  )
+                                )}
+                              </Box>
+                              <Box>
+                                <Button
+                                  onClick={() =>
+                                    arrayHelpers.remove(
+                                      lotIndex
+                                    )
+                                  }
+                                >
+                                  <Close />
+                                </Button>
+                              </Box>
+                            </Box>
+                          )
+                        ),
+                    ]
+                  }}
+                </FieldArray>
+              </Box>
+              <Box
+                gridArea="bottom"
+                justify="center"
+                align="center"
+              >
+                <Button
+                  onClick={() =>
+                    addRow({
+                      name: '',
+                      quantities: Array(
+                        countSizes
+                      ).fill(0),
+                      id: uuid(),
+                    })
+                  }
+                >
+                  <Add />
+                </Button>
+                <Button
+                  primary
+                  type="submit"
+                >
+                  <Text textAlign="center">
+                    Submit
+                  </Text>
+                </Button>
+              </Box>
+            </Grid>
+          </Form>
+        )}
+      </Formik>
+    </Grommet>
+  )
+}
