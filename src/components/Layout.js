@@ -1,68 +1,130 @@
 import React from 'react'
 import { Link } from 'gatsby'
-import { Typography } from '@material-ui/core'
+import {
+  Button,
+  Grommet,
+  Box,
+  Heading,
+  ResponsiveContext,
+} from 'grommet'
+import { Menu } from 'grommet-icons'
+import Sidebar from './Sidebar'
 
-import { rhythm, scale } from '../utils/typography'
+const theme = {
+  global: {
+    font: {
+      family: 'Roboto',
+      size: '14px',
+      height: '20px',
+    },
+  },
+}
+
+const AppBar = props => (
+  <Box
+    tag="header"
+    direction="row"
+    align="center"
+    justify="between"
+    background="brand"
+    pad={{
+      left: 'medium',
+      right: 'small',
+      vertical: 'small',
+    }}
+    elevation="medium"
+    style={{ zIndex: '1' }}
+    {...props}
+  />
+)
 
 class Layout extends React.Component {
+  state = {
+    showSidebar: false,
+  }
+
+  handleSidebar = () =>
+    this.setState(previousState => ({
+      showSidebar: !previousState.showSidebar,
+    }))
+
   render() {
-    const { location, title, children } = this.props
+    const { showSidebar } = this.state
+    const {
+      location,
+      title,
+      children,
+    } = this.props
     const rootPath = `${__PATH_PREFIX__}/`
     let header
 
-    if (location.pathname === rootPath) {
+    if (
+      location.pathname === rootPath
+    ) {
       header = (
-        <Typography variant="h2" gutterBottom>
-          <Link
-            style={{
-              boxShadow: `none`,
-              textDecoration: `none`,
-              color: `inherit`,
-            }}
-            to={`/`}
-          >
-            {title}
-          </Link>
-        </Typography>
+        <Heading>
+          <Link to={`/`}>{title}</Link>
+        </Heading>
       )
     } else {
       header = (
-        <h3
-          style={{
-            fontFamily: `Montserrat, sans-serif`,
-            marginTop: 0,
-          }}
-        >
-          <Link
-            style={{
-              boxShadow: `none`,
-              textDecoration: `none`,
-              color: `inherit`,
-            }}
-            to={`/`}
-          >
-            {title}
-          </Link>
-        </h3>
+        <Heading level="3">
+          <Link to={`/`}>{title}</Link>
+        </Heading>
       )
     }
     return (
-      <div
-        style={{
-          marginLeft: `auto`,
-          marginRight: `auto`,
-          maxWidth: rhythm(24),
-          padding: `${rhythm(1.5)} ${rhythm(3 / 4)}`,
-        }}
-      >
-        {header}
-        {children}
-        <footer>
-          © {new Date().getFullYear()}, Built with
-          {` `}
-          <a href="https://www.gatsbyjs.org">Gatsby</a>
-        </footer>
-      </div>
+      <Grommet theme={theme} full>
+        <ResponsiveContext.Consumer>
+          {size => (
+            <Box width="xlarge">
+              <AppBar>
+                {header}
+                <Button
+                  icon={<Menu />}
+                  onClick={
+                    this.handleSidebar
+                  }
+                />
+              </AppBar>
+              <Box
+                direction="row"
+                flex
+                overflow={{
+                  horizontal: 'hidden',
+                }}
+              >
+                <Box fill>
+                  {children}
+                  <Box>
+                    <footer>
+                      ©
+                      {new Date().getFullYear()}
+                      , Built with
+                      <a href="https://www.gatsbyjs.org">
+                        Gatsby
+                      </a>
+                    </footer>
+                  </Box>
+                </Box>
+                <Sidebar
+                  size={size}
+                  showSidebar={
+                    showSidebar
+                  }
+                  handleSidebar={
+                    this.handleSidebar
+                  }
+                >
+                  <Link to="/about">
+                    About me
+                  </Link>
+                </Sidebar>
+              </Box>
+            </Box>
+          )}
+        </ResponsiveContext.Consumer>
+      </Grommet>
     )
   }
 }
