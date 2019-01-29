@@ -22,7 +22,9 @@ import { Add } from 'grommet-icons'
 
 const schema = () => {
   return Yup.lazy(values => {
-    const lotNames = values.lots
+    const lotNames = []
+
+    /*  lotName = values.lots
       .map(lot => lot.name)
       .map(name => ({ count: 1, name }))
       .reduce((a, b) => {
@@ -33,7 +35,7 @@ const schema = () => {
     console.log(lotNames)
     const duplicateLotNames = Object.keys(
       lotNames
-    ).filter(a => lotNames[a] > 1)
+    ).filter(a => lotNames[a] > 1) */
 
     return Yup.object().shape({
       lots: Yup.array().of(
@@ -87,6 +89,10 @@ const initialValues = {
     },
   ],
 }
+
+const CustomField = ({ field }) => (
+  <TextInput {...field} />
+)
 
 export default () => (
   <Grommet>
@@ -146,7 +152,15 @@ export default () => (
                           <Box>
                             <Field
                               name={`lots[${lotIndex}].name`}
-                            />
+                            >
+                              {({
+                                field,
+                              }) => (
+                                <TextInput
+                                  {...field}
+                                />
+                              )}
+                            </Field>
                             <ErrorMessage
                               component={
                                 Text
@@ -165,6 +179,9 @@ export default () => (
                                 }
                               >
                                 <Field
+                                  component={
+                                    CustomField
+                                  }
                                   name={`lots[${lotIndex}].quantities[${quantityIndex}]`}
                                 />
                                 <ErrorMessage
