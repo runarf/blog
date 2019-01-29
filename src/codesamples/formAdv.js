@@ -11,9 +11,14 @@ import uuid from 'uuid/v4'
 
 import {
   Box,
+  Button,
   Grid,
   Grommet,
+  Text,
+  TextInput,
 } from 'grommet'
+
+import { Add } from 'grommet-icons'
 
 const schema = () => {
   return Yup.lazy(values => {
@@ -60,6 +65,8 @@ const schema = () => {
 
 const countSizes = 3
 
+const SIZES = [38, 39, 40]
+
 const initialValues = {
   lots: [
     {
@@ -82,7 +89,7 @@ const initialValues = {
 }
 
 export default () => (
-  <div className="container-fluid">
+  <Grommet>
     <Formik
       initialValues={initialValues}
       validationSchema={schema}
@@ -106,112 +113,103 @@ export default () => (
         isSubmitting,
         values,
         isValid,
-        resetForm,
       }) => (
         <Form>
-          <div className="row">
-            <div
-              className="col-3"
-              css={css`
-                background-color: turquoise;
-              `}
-            >
-              Name of lot
-            </div>
-            <div
-              className="col"
-              css={css`
-                background-color: pink;
-              `}
-            >
-              Quantities
-            </div>
-          </div>
+          <Box
+            direction="row"
+            justify="between"
+          >
+            <Text>Name of lot</Text>
+            {SIZES.map(size => (
+              <Text key={size}>
+                {size}
+              </Text>
+            ))}
+          </Box>
           <FieldArray name="lots">
-            {arrayHelpers => (
-              <div>
-                {values.lots &&
+            {arrayHelpers => {
+              return [
+                values.lots &&
                   values.lots.length >
                     0 &&
                   values.lots.map(
                     (lot, lotIndex) => (
-                      <div
-                        className="row"
-                        key={lot.id}
+                      <Box
+                        key={lotIndex}
+                        direction="row"
+                        justify="center"
                       >
-                        <div
-                          className="col-3"
-                          css={css`
-                            background-color: turquoise;
-                          `}
+                        <Box
+                          direction="row"
+                          justify="center"
                         >
-                          <Field
-                            name={`lots[${lotIndex}].name`}
-                          />
-                          <ErrorMessage
-                            name={`lots[${lotIndex}].name`}
-                          />
-                        </div>
-                        {lot.quantities.map(
-                          (
-                            quantity,
-                            quantityIndex
-                          ) => (
-                            <div
-                              className="col"
-                              key={
-                                quantityIndex
+                          <Box>
+                            <Field
+                              name={`lots[${lotIndex}].name`}
+                            />
+                            <ErrorMessage
+                              component={
+                                Text
                               }
-                              css={css`
-                                background-color: pink;
-                              `}
-                            >
-                              <Field
-                                name={`lots[${lotIndex}].quantities[${quantityIndex}]`}
-                              />
-                              <ErrorMessage
-                                name={`lots[${lotIndex}].quantities[${quantityIndex}]`}
-                              />
-                            </div>
-                          )
-                        )}
-                      </div>
+                              name={`lots[${lotIndex}].name`}
+                            />
+                          </Box>
+                          {lot.quantities.map(
+                            (
+                              quantity,
+                              quantityIndex
+                            ) => (
+                              <Box
+                                key={
+                                  quantityIndex
+                                }
+                              >
+                                <Field
+                                  name={`lots[${lotIndex}].quantities[${quantityIndex}]`}
+                                />
+                                <ErrorMessage
+                                  name={`lots[${lotIndex}].quantities[${quantityIndex}]`}
+                                />
+                              </Box>
+                            )
+                          )}
+                        </Box>
+                      </Box>
                     )
-                  )}
-                <div className="row">
-                  <div className="col">
-                    <button
-                      type="button"
-                      onClick={() =>
-                        arrayHelpers.push(
-                          {
-                            name: '',
-                            quantities: Array(
-                              countSizes
-                            ).fill(0),
-                            id: uuid(),
-                          }
-                        )
-                      }
-                    >
-                      +
-                    </button>
-                    <Button
-                      type="submit"
-                      disabled={
-                        !isValid ||
-                        isSubmitting
-                      }
-                    >
+                  ),
+                <Box
+                  justify="center"
+                  align="center"
+                >
+                  <Button
+                    onClick={() =>
+                      arrayHelpers.push(
+                        {
+                          name: '',
+                          quantities: Array(
+                            countSizes
+                          ).fill(0),
+                          id: uuid(),
+                        }
+                      )
+                    }
+                  >
+                    <Add />
+                  </Button>
+                  <Button
+                    primary
+                    type="submit"
+                  >
+                    <Text textAlign="center">
                       Submit
-                    </Button>
-                  </div>
-                </div>
-              </div>
-            )}
+                    </Text>
+                  </Button>
+                </Box>,
+              ]
+            }}
           </FieldArray>
         </Form>
       )}
     </Formik>
-  </div>
+  </Grommet>
 )
