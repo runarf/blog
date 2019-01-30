@@ -3,8 +3,22 @@ import { Link, graphql } from 'gatsby'
 
 import Bio from '../components/Bio'
 import Layout from '../components/Layout'
+import styled from 'styled-components'
+import {
+  Box,
+  Tab,
+  Tabs,
+  Text,
+  Heading,
+  Paragraph,
+} from 'grommet'
 
-import { Box, Tab, Tabs } from 'grommet'
+const CardLink = styled(Link)`
+  :hover {
+    opacity: 0.8;
+  }
+  text-decoration: none;
+`
 
 class BlogIndex extends React.Component {
   render() {
@@ -47,13 +61,16 @@ class BlogIndex extends React.Component {
                 {codeSamples.map(
                   ({ node }) => {
                     return (
-                      <Box>
+                      <Text
+                        size="medium"
+                        margin="xsmall"
+                      >
                         <Link
                           to={node.path}
                         >
                           {node.path}
                         </Link>
-                      </Box>
+                      </Text>
                     )
                   }
                 )}
@@ -73,51 +90,41 @@ class BlogIndex extends React.Component {
                         .title ||
                       node.fields.slug
                     return (
-                      <article>
-                        <Box
-                          round="small"
-                          elevation="small"
-                          border={{
-                            side: 'all',
-                          }}
-                        >
-                          <div
+                      <CardLink
+                        to={
+                          node.fields
+                            .slug
+                        }
+                      >
+                        <article>
+                          <Box
+                            round="small"
+                            elevation="small"
                             key={
                               node
                                 .fields
                                 .slug
                             }
                           >
-                            <h3>
-                              <Link
-                                style={{
-                                  boxShadow: `none`,
-                                }}
-                                to={
-                                  node
-                                    .fields
-                                    .slug
-                                }
-                              >
-                                {title}
-                              </Link>
-                            </h3>
-                            <small>
+                            <Heading level="3">
+                              {title}
+                            </Heading>
+                            <Text size="xsmall">
                               {
                                 node
                                   .frontmatter
                                   .date
                               }
-                            </small>
-                            <p
+                            </Text>
+                            <Paragraph
                               dangerouslySetInnerHTML={{
                                 __html:
                                   node.excerpt,
                               }}
                             />
-                          </div>
-                        </Box>
-                      </article>
+                          </Box>
+                        </article>
+                      </CardLink>
                     )
                   }
                 )}

@@ -74,10 +74,10 @@ class Layout extends React.Component {
       )
     }
     return (
-      <Grommet theme={theme} full>
+      <Grommet theme={theme}>
         <ResponsiveContext.Consumer>
           {size => (
-            <Box width="xlarge">
+            <Box>
               <AppBar>
                 {header}
                 <Button
@@ -93,6 +93,7 @@ class Layout extends React.Component {
                 overflow={{
                   horizontal: 'hidden',
                 }}
+                fill
               >
                 <Box fill>
                   {children}
