@@ -26,7 +26,7 @@ import {
 const schema = () => {
   return Yup.lazy(values => {
     const lotNames = []
-
+    const duplicateLotNames = []
     /*  lotName = values.lots
       .map(lot => lot.name)
       .map(name => ({ count: 1, name }))
@@ -121,7 +121,7 @@ export default () => {
         }) => (
           <Form>
             <Grid
-              columns={['auto']}
+              columns={['xsmall']}
               rows={[
                 'auto',
                 'auto',
@@ -150,11 +150,12 @@ export default () => {
                   columns={[
                     'xsmall',
                     ...SIZES.map(
-                      () => 'auto'
+                      () => 'xsmall'
                     ),
                     'xsmall',
                   ]}
                   gap="small"
+                  margin="small"
                 >
                   <Box
                     background="red"
@@ -173,10 +174,7 @@ export default () => {
                   ))}
                 </Grid>
               </Box>
-              <Box
-                gridArea="main"
-                background="pink"
-              >
+              <Box gridArea="main">
                 <FieldArray name="lots">
                   {arrayHelpers => {
                     addRow =
@@ -195,11 +193,12 @@ export default () => {
                                 'xsmall',
                                 ...SIZES.map(
                                   () =>
-                                    'auto'
+                                    'xsmall'
                                 ),
                                 'xsmall',
                               ]}
                               gap="small"
+                              margin="small"
                             >
                               <Box>
                                 <Field
@@ -237,13 +236,16 @@ export default () => {
                                       name={`lots[${lotIndex}].quantities[${quantityIndex}]`}
                                     />
                                     <ErrorMessage
+                                      component={
+                                        Text
+                                      }
                                       name={`lots[${lotIndex}].quantities[${quantityIndex}]`}
                                     />
                                   </Box>
                                 )
                               )}
 
-                              <Box fill="false">
+                              <Box justify="center">
                                 <Button
                                   onClick={() =>
                                     arrayHelpers.remove(
@@ -263,15 +265,15 @@ export default () => {
               </Box>
               <Box
                 gridArea="bottom"
-                background="pink"
+                pad="xsmall"
               >
                 <Grid
                   columns={[
-                    'xsmall',
-                    'xsmall',
+                    'small',
+                    'small',
                   ]}
+                  justifyContent="start"
                   gap="small"
-                  justifyContent="around"
                 >
                   <Box>
                     <Button
@@ -284,22 +286,15 @@ export default () => {
                           id: uuid(),
                         })
                       }
-                    >
-                      <Add />
-                    </Button>
+                      label={<Add />}
+                    />
                   </Box>
                   <Box>
                     <Button
                       primary
                       type="submit"
-                    >
-                      <Text
-                        textAlign="end"
-                        fill
-                      >
-                        Submit
-                      </Text>
-                    </Button>
+                      label="Submit"
+                    />
                   </Box>
                 </Grid>
               </Box>
