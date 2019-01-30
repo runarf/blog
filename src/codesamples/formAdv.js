@@ -25,9 +25,7 @@ import {
 
 const schema = () => {
   return Yup.lazy(values => {
-    const lotNames = []
-    const duplicateLotNames = []
-    /*  lotName = values.lots
+    const lotNames = values.lots
       .map(lot => lot.name)
       .map(name => ({ count: 1, name }))
       .reduce((a, b) => {
@@ -38,7 +36,7 @@ const schema = () => {
     console.log(lotNames)
     const duplicateLotNames = Object.keys(
       lotNames
-    ).filter(a => lotNames[a] > 1) */
+    ).filter(a => lotNames[a] > 1)
 
     return Yup.object().shape({
       lots: Yup.array().of(
@@ -157,10 +155,7 @@ export default () => {
                   gap="small"
                   margin="small"
                 >
-                  <Box
-                    background="red"
-                    align="center"
-                  >
+                  <Box align="center">
                     <Text>
                       Name of lot
                     </Text>
