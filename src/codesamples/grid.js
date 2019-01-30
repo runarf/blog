@@ -150,32 +150,88 @@ const Percentages = () => (
 const NColumnGrid = () => (
   <Grommet theme={grommet} full>
     <Grid
-      columns={{
-        count: 6,
-        size: 'auto',
-      }}
+      columns={[
+        'small',
+        'small',
+        'small',
+      ]}
+      rows={['small', 'small', 'small']}
+      areas={[
+        {
+          name: 'header',
+          start: [0, 0],
+          end: [2, 0],
+        },
+        {
+          name: 'body',
+          start: [0, 1],
+          end: [2, 1],
+        },
+        {
+          name: 'footer',
+          start: [0, 2],
+          end: [2, 2],
+        },
+      ]}
       gap="small"
     >
-      <Box background="brand">
-        Item 1
+      <Box gridArea="header">
+        <Grid
+          columns={{
+            count: 3,
+            size: 'auto',
+          }}
+        >
+          <Box background="brand">
+            Item 1
+          </Box>
+          <Box background="brand">
+            Item 2
+          </Box>
+          <Box background="brand">
+            Item 3
+          </Box>
+        </Grid>
       </Box>
-      <Box background="brand">
-        Item 2
+      <Box gridArea="body">
+        <Grid
+          columns={{
+            count: 3,
+            size: 'auto',
+          }}
+        >
+          <Box background="brand">
+            Item 4
+          </Box>
+          <Box background="brand">
+            Item 5
+          </Box>
+          <Box background="brand">
+            Item 6
+          </Box>
+        </Grid>
       </Box>
-      <Box background="brand">
-        Item 3
-      </Box>
-      <Box background="brand">
-        Item 4
-      </Box>
-      <Box background="brand">
-        Item 5
-      </Box>
-      <Box background="brand">
-        Item 6
+      <Box gridArea="footer">
+        <Grid
+          columns={{
+            count: 3,
+            size: 'auto',
+          }}
+          gap="small"
+        >
+          <Box background="brand">
+            Item 1
+          </Box>
+          <Box background="brand">
+            Item 2
+          </Box>
+          <Box background="brand">
+            Item 3
+          </Box>
+        </Grid>
       </Box>
     </Grid>
   </Grommet>
 )
 
-export default AppGrid
+export default NColumnGrid

@@ -121,14 +121,7 @@ export default () => {
         }) => (
           <Form>
             <Grid
-              fill
-              columns={[
-                'small',
-                'small',
-                'small',
-                'small',
-                'small',
-              ]}
+              columns={['auto']}
               rows={[
                 'auto',
                 'auto',
@@ -138,38 +131,52 @@ export default () => {
                 {
                   name: 'header',
                   start: [0, 0],
-                  end: [4, 0],
+                  end: [1, 0],
                 },
                 {
                   name: 'main',
                   start: [0, 1],
-                  end: [4, 1],
+                  end: [1, 1],
                 },
                 {
                   name: 'bottom',
                   start: [0, 2],
-                  end: [0, 2],
+                  end: [1, 2],
                 },
               ]}
             >
-              <Box
-                gridArea="header"
-                direction="row"
-              >
-                <Box>
-                  <Text>
-                    Name of lot
-                  </Text>
-                </Box>
-                {SIZES.map(size => (
-                  <Box>
-                    <Text key={size}>
-                      {size}
+              <Box gridArea="header">
+                <Grid
+                  columns={[
+                    'xsmall',
+                    ...SIZES.map(
+                      () => 'auto'
+                    ),
+                    'xsmall',
+                  ]}
+                  gap="small"
+                >
+                  <Box
+                    background="red"
+                    align="center"
+                  >
+                    <Text>
+                      Name of lot
                     </Text>
                   </Box>
-                ))}
+                  {SIZES.map(size => (
+                    <Box align="center">
+                      <Text key={size}>
+                        {size}
+                      </Text>
+                    </Box>
+                  ))}
+                </Grid>
               </Box>
-              <Box gridArea="main">
+              <Box
+                gridArea="main"
+                background="pink"
+              >
                 <FieldArray name="lots">
                   {arrayHelpers => {
                     addRow =
@@ -183,59 +190,60 @@ export default () => {
                             lot,
                             lotIndex
                           ) => (
-                            <Box
-                              direction="row"
-                              key={
-                                lotIndex
-                              }
+                            <Grid
+                              columns={[
+                                'xsmall',
+                                ...SIZES.map(
+                                  () =>
+                                    'auto'
+                                ),
+                                'xsmall',
+                              ]}
+                              gap="small"
                             >
-                              <Box
-                                direction="row"
-                                justify="between"
-                              >
-                                <Box>
-                                  <Field
-                                    name={`lots[${lotIndex}].name`}
-                                  >
-                                    {({
-                                      field,
-                                    }) => (
-                                      <TextInput
-                                        {...field}
-                                      />
-                                    )}
-                                  </Field>
-                                  <ErrorMessage
-                                    component={
-                                      Text
-                                    }
-                                    name={`lots[${lotIndex}].name`}
-                                  />
-                                </Box>
-                                {lot.quantities.map(
-                                  (
-                                    quantity,
-                                    quantityIndex
-                                  ) => (
-                                    <Box
-                                      key={
-                                        quantityIndex
-                                      }
-                                    >
-                                      <Field
-                                        component={
-                                          CustomField
-                                        }
-                                        name={`lots[${lotIndex}].quantities[${quantityIndex}]`}
-                                      />
-                                      <ErrorMessage
-                                        name={`lots[${lotIndex}].quantities[${quantityIndex}]`}
-                                      />
-                                    </Box>
-                                  )
-                                )}
-                              </Box>
                               <Box>
+                                <Field
+                                  name={`lots[${lotIndex}].name`}
+                                >
+                                  {({
+                                    field,
+                                  }) => (
+                                    <TextInput
+                                      {...field}
+                                    />
+                                  )}
+                                </Field>
+                                <ErrorMessage
+                                  component={
+                                    Text
+                                  }
+                                  name={`lots[${lotIndex}].name`}
+                                />
+                              </Box>
+                              {lot.quantities.map(
+                                (
+                                  quantity,
+                                  quantityIndex
+                                ) => (
+                                  <Box
+                                    key={
+                                      quantityIndex
+                                    }
+                                  >
+                                    <Field
+                                      component={
+                                        CustomField
+                                      }
+                                      name={`lots[${lotIndex}].quantities[${quantityIndex}]`}
+                                    />
+                                    <ErrorMessage
+                                      name={`lots[${lotIndex}].quantities[${quantityIndex}]`}
+                                    />
+                                  </Box>
+                                )
+                              )}
+
+                              <Box fill="false">
                                 <Button
                                   onClick={() =>
                                     arrayHelpers.remove(
@@ -246,7 +254,7 @@ export default () => {
                                   <Close />
                                 </Button>
                               </Box>
-                            </Box>
+                            </Grid>
                           )
                         ),
                     ]
@@ -255,30 +263,45 @@ export default () => {
               </Box>
               <Box
                 gridArea="bottom"
-                justify="center"
-                align="center"
+                background="pink"
               >
-                <Button
-                  onClick={() =>
-                    addRow({
-                      name: '',
-                      quantities: Array(
-                        countSizes
-                      ).fill(0),
-                      id: uuid(),
-                    })
-                  }
+                <Grid
+                  columns={[
+                    'xsmall',
+                    'xsmall',
+                  ]}
+                  gap="small"
+                  justifyContent="around"
                 >
-                  <Add />
-                </Button>
-                <Button
-                  primary
-                  type="submit"
-                >
-                  <Text textAlign="center">
-                    Submit
-                  </Text>
-                </Button>
+                  <Box>
+                    <Button
+                      onClick={() =>
+                        addRow({
+                          name: '',
+                          quantities: Array(
+                            countSizes
+                          ).fill(0),
+                          id: uuid(),
+                        })
+                      }
+                    >
+                      <Add />
+                    </Button>
+                  </Box>
+                  <Box>
+                    <Button
+                      primary
+                      type="submit"
+                    >
+                      <Text
+                        textAlign="end"
+                        fill
+                      >
+                        Submit
+                      </Text>
+                    </Button>
+                  </Box>
+                </Grid>
               </Box>
             </Grid>
           </Form>
