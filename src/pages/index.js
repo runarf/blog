@@ -51,7 +51,7 @@ class BlogIndex extends React.Component {
       >
         <Bio />
         <Box background="green" fill>
-          <Tabs flex>
+          <Tabs>
             <Tab title="Code">
               <Box
                 fill
@@ -77,12 +77,7 @@ class BlogIndex extends React.Component {
               </Box>
             </Tab>
             <Tab title="Blog">
-              <Box
-                fill
-                background="accent-2"
-                justify="center"
-                align="center"
-              >
+              <Box background="accent-2">
                 {posts.map(
                   ({ node }) => {
                     const title =
@@ -90,41 +85,38 @@ class BlogIndex extends React.Component {
                         .title ||
                       node.fields.slug
                     return (
-                      <CardLink
-                        to={
+                      <Box
+                        fill
+                        align="center"
+                        key={
                           node.fields
                             .slug
                         }
                       >
-                        <article>
-                          <Box
-                            round="small"
-                            elevation="small"
-                            key={
+                        <CardLink
+                          to={
+                            node.fields
+                              .slug
+                          }
+                        >
+                          <Heading level="3">
+                            {title}
+                          </Heading>
+                          <Text size="xsmall">
+                            {
                               node
-                                .fields
-                                .slug
+                                .frontmatter
+                                .date
                             }
-                          >
-                            <Heading level="3">
-                              {title}
-                            </Heading>
-                            <Text size="xsmall">
-                              {
-                                node
-                                  .frontmatter
-                                  .date
-                              }
-                            </Text>
-                            <Paragraph
-                              dangerouslySetInnerHTML={{
-                                __html:
-                                  node.excerpt,
-                              }}
-                            />
-                          </Box>
-                        </article>
-                      </CardLink>
+                          </Text>
+                          <Paragraph
+                            dangerouslySetInnerHTML={{
+                              __html:
+                                node.excerpt,
+                            }}
+                          />
+                        </CardLink>
+                      </Box>
                     )
                   }
                 )}

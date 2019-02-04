@@ -6,6 +6,7 @@ import {
   Box,
   Heading,
   ResponsiveContext,
+  Text,
 } from 'grommet'
 import { Menu } from 'grommet-icons'
 import Sidebar from './Sidebar'
@@ -55,31 +56,18 @@ class Layout extends React.Component {
       title,
       children,
     } = this.props
-    const rootPath = `${__PATH_PREFIX__}/`
-    let header
 
-    if (
-      location.pathname === rootPath
-    ) {
-      header = (
-        <Heading>
-          <Link to={`/`}>{title}</Link>
-        </Heading>
-      )
-    } else {
-      header = (
-        <Heading level="3">
-          <Link to={`/`}>{title}</Link>
-        </Heading>
-      )
-    }
     return (
       <Grommet theme={theme}>
         <ResponsiveContext.Consumer>
           {size => (
             <Box>
               <AppBar>
-                {header}
+                <Heading>
+                  <Link to={`/`}>
+                    <Text>My Blog</Text>
+                  </Link>
+                </Heading>
                 <Button
                   icon={<Menu />}
                   onClick={
